@@ -1,37 +1,36 @@
-// Discount Model
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const discountSchema = new Schema({
-  image: {
-    type: String,
-  },
+const cartSchema = new Schema({
   name: {
     type: String,
     required: true,
   },
-  company: {
+  image: {
     type: String,
+    required: true,
+  },
+  time: {
+    type: Number,
     required: true,
   },
   price: {
     type: Number,
     required: true,
   },
-  discount: {
+  tag: {
+    type: String,
+    required: true,
+  },
+  qty: {
     type: Number,
     required: true,
   },
-  total: Number, // Change to Number, remove 'required'
-  start: {
-    type: Date,
+  total: {
+    type: Number,
     required: true,
   },
-  end: {
-    type: Date,
-    required: true,
-  }
 });
 
-module.exports = mongoose.model("Discount", discountSchema);
+module.exports = mongoose.model("Cart", cartSchema);
