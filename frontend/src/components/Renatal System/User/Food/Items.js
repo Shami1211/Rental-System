@@ -4,8 +4,8 @@ import axios from "axios";
 import { IoMdCart } from "react-icons/io";
 import "../User.css";
 
-const Food = ({ food }) => {
-  const { _id, name, image, time, price, tag } = food;
+const Item = ({ item }) => {
+  const { _id, name, image, location, price, description,contact } = item;
 
   return (
     <div>
@@ -14,20 +14,25 @@ const Food = ({ food }) => {
         <h3 className="item_name">{name}</h3>
         <div className="item_con">
           <p className="detail_p">
-            <b>Preparation Time</b>
-            <br /> {time} minutes
+            <b>Location</b>
+            <br /> {location} 
           </p>
           <p className="detail_p">
             <b>Price</b>
             <br /> Rs {price}.00
           </p>
           <p className="detail_p">
-            <b>Tag</b>
+            <b>Description</b>
             <br />
-            {tag}
+            {description}
+          </p>
+          <p className="detail_p">
+            <b>Contact</b>
+            <br />
+            {contact}
           </p>
         </div>
-        <Link className="btnLink" to={`/food-details/${_id}`}>
+        <Link className="btnLink" to={`/item-details/${_id}`}>
           <button className="viewbtn">View</button>
         </Link>
       </div>
@@ -35,50 +40,50 @@ const Food = ({ food }) => {
   );
 };
 
-const Foods = () => {
-  const [foods, setFoods] = useState([]);
-  const [filteredFoods, setFilteredFoods] = useState([]);
-  const [tags, setTags] = useState([]);
+const Items = () => {
+  const [items, setItems] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [types, setTypes] = useState([]);
   const [alertMessage, setAlertMessage] = useState("");
 
   useEffect(() => {
-    const fetchFoods = async () => {
+    const fetchItems = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/foods");
-        setFoods(response.data.foods);
-        // Extract tags from foods
-        const allTags = response.data.foods.map((food) => food.tag);
-        // Remove duplicate tags
-        const uniqueTags = [...new Set(allTags)];
-        setTags(uniqueTags);
+        const response = await axios.get("http://localhost:8080/items");
+        setItems(response.data.items);
+        // Extract types from items
+        const allTypes = response.data.items.map((item) => item.type);
+        // Remove duplicate types
+        const uniqueTypes = [...new Set(allTypes)];
+        setTypes(uniqueTypes);
       } catch (error) {
-        console.error("Error fetching foods:", error);
-        setAlertMessage("Error fetching food items.");
+        console.error("Error fetching items:", error);
+        setAlertMessage("Error fetching item items.");
       }
     };
 
-    fetchFoods();
+    fetchItems();
   }, []);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [noResults, setNoResults] = useState(false);
-  const handleTagFilter = (selectedTag) => {
-    const filtered = foods.filter((food) => food.tag === selectedTag);
-    setFilteredFoods(filtered);
+  const handleTypeFilter = (selectedType) => {
+    const filtered = items.filter((item) => item.type === selectedType);
+    setFilteredItems(filtered);
   };
   const handleSearch = () => {
-    const filtered = foods.filter((food) =>
-      Object.values(food).some((field) =>
+    const filtered = items.filter((item) =>
+      Object.values(item).some((field) =>
         field.toString().toLowerCase().includes(searchQuery.toLowerCase())
       )
     );
-    setFoods(filtered);
+    setItems(filtered);
     setNoResults(filtered.length === 0);
   };
   return (
     <div>
       <div className="usernavbar">
-        <button onClick={() => (window.location.href = "/add-food")}>
+        <button onClick={() => (window.location.href = "/add-items")}>
           Admin
         </button>
         <IoMdCart
@@ -100,31 +105,31 @@ const Foods = () => {
           Search
         </button>
       </div>
-        <div className="tags_container">
+        <div className="types_container">
           <button
             className="filterbtn"
             onClick={() => (window.location.href = "/")}
           >
             all
           </button>
-          {tags.map((tag) => (
+          {types.map((type) => (
             <button
               className="filterbtn"
-              key={tag}
-              onClick={() => handleTagFilter(tag)}
+              key={type}
+              onClick={() => handleTypeFilter(type)}
             >
-              {tag}
+              {type}
             </button>
           ))}
         </div>
         <div className="card_container_cart">
-          {filteredFoods.length > 0
-            ? filteredFoods.map((food) => <Food key={food._id} food={food} />)
-            : foods.map((food) => <Food key={food._id} food={food} />)}
+          {filteredItems.length > 0
+            ? filteredItems.map((item) => <Item key={item._id} item={item} />)
+            : items.map((item) => <Item key={item._id} item={item} />)}
         </div>
       </div>
     </div>
   );
 };
 
-export default Foods;
+export default Items;

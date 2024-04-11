@@ -1,32 +1,36 @@
-
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
 
-//Routers
-const budget_router = require("./routes/budget-routes");
-const post_router = require("./routes/post-routes");
-const drive_router = require("./routes/drive-routes");
-const discount_router = require("./routes/discount-routes");
+// Routers
+const itemRouter = require("./Routes/ItemRoute");
+const cartRouter = require("./Routes/CartRoute");
+const deliveryRouter = require("./Routes/DeliveryRoute");
 
 // Middlewares
 app.use(express.json());
 app.use(cors());
-app.use("/budgets", budget_router); // localhost:5000/budgets
-app.use("/posts", post_router); // localhost:5000/posts
-app.use("/drives", drive_router); // localhost:5000/drives
-app.use("/discounts", discount_router); // localhost:5000/drives
+app.use("/items", itemRouter); // localhost:5000/items
+app.use("/carts", cartRouter); // localhost:5000/carts
+app.use("/deliveries", deliveryRouter);
 
+// Configuration
+const PORT = process.env.PORT || 8080;
+const MONGO_URL =
+  process.env.MONGO_URL ||
+  "mongodb+srv://admin:jiCG8f44dLD88zfS@cluster0.evmm97r.mongodb.net/";
+const DEV_MODE = process.env.DEV_MODE || "development";
 
-//5knLkTrtbu1yqFpR
 mongoose
-  .connect(
-    "mongodb+srv://admin:5knLkTrtbu1yqFpR@budget.jslcg3f.mongodb.net/?retryWrites=true&w=majority"
-  )
-  .then(() => console.log("Connected To Database"))
+  .connect(MONGO_URL)
   .then(() => {
-    app.listen(5000);
-  }) 
-  .catch((err) => console.log(err));
-
+    console.log("Connected to MongoDB");
+    app.listen(PORT, () => {
+      console.log(`Listening on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("Error connecting to MongoDB:", err);
+    process.exit(1); // Exit the application if unable to connect to MongoDB
+  });
