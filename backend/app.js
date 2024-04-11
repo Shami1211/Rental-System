@@ -5,15 +5,13 @@ const app = express();
 
 // Routers
 const itemRouter = require("./Routes/ItemRoute");
-const cartRouter = require("./Routes/CartRoute");
-const deliveryRouter = require("./Routes/DeliveryRoute");
+
 
 // Middlewares
 app.use(express.json());
 app.use(cors());
 app.use("/items", itemRouter); // localhost:5000/items
-app.use("/carts", cartRouter); // localhost:5000/carts
-app.use("/deliveries", deliveryRouter);
+
 
 // Configuration
 const PORT = process.env.PORT || 8080;

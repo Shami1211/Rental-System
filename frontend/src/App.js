@@ -7,8 +7,8 @@ import AdminItems from "./components/Renatal System/Admin/Item/Items";
 import UpdateItem from "./components/Renatal System/Admin/Item/UpdateItem";
 
 //User-Item Display,Order
-import UserItems from "./components/Renatal System/User/Food/Items";
-import ItemDetails from "./components/Renatal System/User/Food/ItemDetails";
+import UserItems from "./components/Renatal System/User/Item/Items";
+import ItemDetails from "./components/Renatal System/User/Item/ItemDetails";
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
         <Routes>
     
 
-          {/* Admin-Food Adding */}
+          {/* Admin-Item Adding */}
           <Route exact path="/add-items" element={<AddItem />} />
           <Route exact path="/admin-items" element={<AdminItems />} /> 
           <Route path="/update-item/:id" element={<UpdateItem />} />
